@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request
-from .detector import check_scam
+from .detector import analyze_message
 
 main = Blueprint('main', __name__)
 
 @main.route("/", methods=["GET", "POST"])
 def home():
-    result = ""
+    analysis = None
     if request.method == "POST":
         message = request.form.get("message", "")
-        result = check_scam(message)
-    return render_template("index.html", result=result)
+        analysis = analyze_message(message)
+    return render_template("index.html", analysis=analysis)

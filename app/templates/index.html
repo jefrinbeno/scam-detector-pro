@@ -2,17 +2,31 @@
 
 {% block content %}
 <div class="box">
-    <h2>Enter Message for Analysis</h2>
+    <h2>Advanced Threat Analysis</h2>
     
     <form method="POST">
         <textarea name="message" placeholder="Paste the suspicious email, SMS, or message here..."></textarea><br>
-        <button type="submit">Run Security Scan</button>
+        <button type="submit">Run Deep Scan</button>
     </form>
 
-    {% if result %}
-        <div class="result-box {% if 'SCAM' in result %}scam-alert{% elif 'NOT SCAM' in result %}safe-alert{% endif %}">
-            <h3>Analysis Result:</h3>
-            <p class="result-text">{{ result }}</p>
+    {% if analysis %}
+        <div class="result-box {% if 'SCAM' in analysis.status %}scam-alert{% elif 'SUSPICIOUS' in analysis.status %}suspicious-alert{% else %}safe-alert{% endif %}">
+            <h3>System Status: {{ analysis.status }}</h3>
+            
+            <div class="threat-meter">
+                <p style="margin-bottom: 5px; font-weight: bold;">Threat Score: {{ analysis.risk_score }} / 100</p>
+                <div class="bar-container">
+                    <div class="bar {% if analysis.risk_score >= 60 %}danger-bar{% elif analysis.risk_score > 0 %}warning-bar{% else %}safe-bar{% endif %}" style="width: {{ analysis.risk_score }}%;"></div>
+                </div>
+            </div>
+
+            {% if analysis.findings %}
+            <ul class="findings-list">
+                {% for finding in analysis.findings %}
+                    <li>🚨 {{ finding }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
     {% endif %}
 </div>

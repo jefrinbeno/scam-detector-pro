@@ -75,3 +75,39 @@ footer {
     color: #8b949e;
     font-size: 12px;
 }
+.suspicious-alert {
+    border-color: #d29922;
+    color: #d29922;
+}
+.threat-meter {
+    margin: 20px 0;
+    text-align: left;
+}
+.bar-container {
+    width: 100%;
+    background-color: #30363d;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #010409;
+}
+.bar {
+    height: 12px;
+    transition: width 0.8s ease-in-out;
+}
+.findings-list {
+    text-align: left;
+    color: #c9d1d9;
+    font-size: 14px;
+    background: #010409;
+    padding: 15px 15px 15px 35px;
+    border-radius: 5px;
+    border: 1px solid #30363d;
+    margin-top: 15px;
+}
+.findings-list li {
+    margin-bottom: 10px;
+}
+/* New CSS classes to handle the Threat Meter colors */
+.danger-bar { background-color: #f85149; }
+.warning-bar { background-color: #d29922; }
+.safe-bar { background-color: #3fb950; }

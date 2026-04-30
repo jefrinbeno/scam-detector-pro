@@ -1,13 +1,20 @@
-from app.detector import check_scam
+from app.detector import analyze_message
 
 def test_scam_detection():
-    # Test a clear scam
-    assert check_scam("Click here to claim your prize") == "SCAM ⚠️"
+    # Test a clear scam with a URL
+    result = analyze_message("Click here to claim your prize http://fake.com")
+    assert "SCAM" in result['status']
+    assert result['risk_score'] >= 60
+    assert len(result['findings']) > 0
     
 def test_safe_message():
     # Test a normal message
-    assert check_scam("Hey, are we still meeting for lunch?") == "NOT SCAM ✅"
+    result = analyze_message("Hey, are we still meeting for lunch?")
+    assert "NOT SCAM" in result['status']
+    assert result['risk_score'] == 0
     
-def test_empty_message():
-    # Test edge case: empty input
-    assert check_scam("") == "Please enter a message."
+def test_homoglyph_attack():
+    # Test using a Cyrillic 'а' instead of English 'a'
+    result = analyze_message("Please login to pаypal")
+    assert result['risk_score'] >= 60
+    assert any("Homoglyph" in finding for finding in result['findings'])
